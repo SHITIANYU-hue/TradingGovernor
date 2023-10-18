@@ -78,6 +78,9 @@ reward -= tax
 根据市场状态、通货膨胀水平和智能体状态等信息，动态计算需求和供应的调整倍数。
 调整倍数可以根据不同因素（例如市场价格、通货膨胀率、智能体财富等）进行动态调整，以模拟实际经济中的宏观调控。
 
+![Alt text](figure/framework.png?raw=true "仿真框架")
+![Alt text](figure/demo.png?raw=true "仿真运行效果（待优化）")
+
 
 
 

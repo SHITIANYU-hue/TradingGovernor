@@ -29,7 +29,7 @@ df = pd.DataFrame(data)
 
 # 创建环境
 from trading_env import MultiAgentTradingEnv
-from strategy import UserStrategy
+from strategy import UserStrategy, EconomicControlStrategy
 num_agents = 10  # 假设有10个智能体
 obs_data_len = 256
 step_len = 128
@@ -47,7 +47,6 @@ env = MultiAgentTradingEnv(num_agents, obs_data_len, step_len, df, fee, max_posi
 for _ in range(10):
     # 创建用户策略列表时传递market_state和inflation_level参数
     user_strategies = [UserStrategy(env.market_state, env.inflation_level, env.agent_states) for _ in range(num_agents)]
-
     user_actions = []  # 存储每个代理的行动
     for agent_id in range(num_agents):
         # 为每个代理调用update方法，传递新的观测值
@@ -56,9 +55,11 @@ for _ in range(10):
         # 为每个代理选择用户策略行动
         user_action = user_strategies[agent_id].choose_action(agent_id)
         user_actions.append(user_action)
-
+    print('strategy',user_actions)
+    strategy=EconomicControlStrategy(env.market_state, env.inflation_level, env.agent_states).calculate_multipliers()
+    print('economic strategy',strategy)
     # 运行环境并输出结果
-    observations, rewards, done = env.step(user_actions)
+    observations, rewards, done = env.step(user_actions,strategy)
     print("Observations:", observations)
     print("Rewards:", rewards)
     print("Market State:", env.market_state)
