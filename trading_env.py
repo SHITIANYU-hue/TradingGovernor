@@ -29,10 +29,15 @@ class MultiAgentTradingEnv:
         }
         self.agent_states = [{'position': 0, 'wealth': 1000} for _ in range(self.num_agents)]
 
-    def step(self, actions):
+    def step(self, actions, economic_control_input):
         # 根据智能体的行动计算总需求和总供应
         total_demand = sum(actions[:self.num_agents])
         total_supply = sum(actions[self.num_agents:])
+
+        # 在这里根据economic_control_input参数调整市场的demand和supply
+        total_demand *= economic_control_input[0]
+        total_supply *= economic_control_input[1]
+
 
         # 更新市场状态
         self.market_state['demand'] = total_demand
